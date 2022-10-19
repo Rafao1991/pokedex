@@ -15,7 +15,7 @@ const PokemonName: NextPage = () => {
 
     const find = async () => {
     const { pokemonName } = router.query
-    const response = await axios.get(`http://localhost:3000/api/pokemon/${pokemonName}`);
+    const response = await axios.get(`https://pokedex-two-eta.vercel.app/api/pokemon/${pokemonName}`);
     return response.data;
    }
 

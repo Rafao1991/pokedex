@@ -9,7 +9,7 @@ const Home: NextPage = () => {
   
   useEffect(() => {
    const findAll = async () => {
-    const response = await axios.get('http://localhost:3000/api/pokemon');
+    const response = await axios.get('https://pokedex-two-eta.vercel.app/api/pokemon');
     setPokemon(response.data);
    }
 
