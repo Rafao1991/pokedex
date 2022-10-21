@@ -1,6 +1,7 @@
 interface PokemonDto {
   id: number;
   name: string;
+  url: string;
   height: number;
   weight: number;
   sprites: Sprite;
