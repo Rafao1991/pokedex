@@ -2,6 +2,7 @@ import axios from "axios";
 import type { NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import NotFound from "../components/NotFound";
@@ -34,7 +35,9 @@ const Home: NextPage = ({ pokemon }: any) => {
             onChange={(e) => setFilter(e.target.value)}
           />
         </div>
-        <a href="/pokedex">or go to a funiest Pokédex...</a>
+        <Link href="/pokedex">
+          <a>or go to a funniest Pokédex...</a>
+        </Link>
         {pokemon ? (
           <section className={styles.pokemonList}>
             {filteredPokemon.map((p: Pokemon) => (
