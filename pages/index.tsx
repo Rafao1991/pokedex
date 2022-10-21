@@ -1,17 +1,21 @@
-import axios from 'axios'
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import Image from 'next/image'
-import { useRouter } from 'next/router';
-import { useState } from 'react';
-import NotFound from '../components/NotFound';
-import styles from '../styles/Home.module.css'
+import axios from "axios";
+import type { NextPage } from "next";
+import Head from "next/head";
+import Image from "next/image";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import NotFound from "../components/NotFound";
+import styles from "../styles/Home.module.css";
 
 const Home: NextPage = ({ pokemon }: any) => {
   const router = useRouter();
   const [filter, setFilter] = useState<string>("");
-  const filteredPokemon = pokemon ? pokemon.filter((pokemon: Pokemon) => pokemon.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase())) : [];
-  
+  const filteredPokemon = pokemon
+    ? pokemon.filter((pokemon: Pokemon) =>
+        pokemon.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase())
+      )
+    : [];
+
   return (
     <div className={styles.container}>
       <Head>
@@ -23,33 +27,54 @@ const Home: NextPage = ({ pokemon }: any) => {
       <main className={styles.main}>
         <h1>Welcome to our Pokédex!</h1>
         <div>
-          Search for a Pokémon: <input type="text" value={filter} onChange={(e) => setFilter(e.target.value)} />
+          Search for a Pokémon:{" "}
+          <input
+            type="text"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          />
         </div>
-        {pokemon ? (<section className={styles.pokemonList}>
-          {filteredPokemon.map((p: Pokemon) => (
-            <div className={styles.pokemonItem} key={p.name} onClick={() => router.push(`/pokemon/${p.name.toLocaleLowerCase()}`)}>
-              <Image width={96} height={96} src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.id}.png`} alt={p.name}/>
-              <p>{p.name}</p>
-            </div>
-          ))}
-        </section>) : <NotFound/>}
+        <a href="/pokedex">or go to a funiest Pokédex...</a>
+        {pokemon ? (
+          <section className={styles.pokemonList}>
+            {filteredPokemon.map((p: Pokemon) => (
+              <div
+                className={styles.pokemonItem}
+                key={p.name}
+                onClick={() =>
+                  router.push(`/pokemon/${p.name.toLocaleLowerCase()}`)
+                }
+              >
+                <Image
+                  width={96}
+                  height={96}
+                  src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${p.id}.png`}
+                  alt={p.name}
+                />
+                <p>{p.name}</p>
+              </div>
+            ))}
+          </section>
+        ) : (
+          <NotFound />
+        )}
       </main>
     </div>
-  )
+  );
 };
 
 export async function getServerSideProps() {
   try {
     const baseUrl = process.env.NEXT_API_BASE_URL;
     const response = await axios.get(`${baseUrl}pokemon`);
-    
+
     return {
       props: { pokemon: response.data },
-    }
+    };
   } catch {
     return {
       props: { pokemon: null },
-    }
+    };
   }
 }
 

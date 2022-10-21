@@ -1,14 +1,14 @@
 import axios from "axios";
 import type { NextPage } from "next";
 import Head from "next/head";
-import Image from 'next/image'
+import Image from "next/image";
 import { useRouter } from "next/router";
 import NotFound from "../../components/NotFound";
-import styles from '../../styles/Home.module.css'
+import styles from "../../styles/Home.module.css";
 
 const PokemonName: NextPage = ({ pokemon }: any) => {
-  const router = useRouter()
-  
+  const router = useRouter();
+
   return (
     <div className={styles.container}>
       <Head>
@@ -24,9 +24,15 @@ const PokemonName: NextPage = ({ pokemon }: any) => {
               <button onClick={() => router.push("/")}>{"<"}</button>
               <h3>{pokemon.name}</h3>
             </div>
-            <div className={styles.card}> 
+            <div className={styles.card}>
               <div className={styles.card_item}>
-                <Image className={styles.card_item} width={96} height={96} src={pokemon.image} alt={pokemon.name} />
+                <Image
+                  className={styles.card_item}
+                  width={96}
+                  height={96}
+                  src={pokemon.image}
+                  alt={pokemon.name}
+                />
               </div>
               <div className={styles.card_item}>
                 <p>Height: {pokemon.height}</p>
@@ -35,7 +41,9 @@ const PokemonName: NextPage = ({ pokemon }: any) => {
               </div>
             </div>
           </>
-        ) : <NotFound />}
+        ) : (
+          <NotFound />
+        )}
       </main>
     </div>
   );
@@ -43,17 +51,19 @@ const PokemonName: NextPage = ({ pokemon }: any) => {
 
 export async function getServerSideProps(ctx: any) {
   const pokemonName: string = ctx.params.pokemonName;
-  const baseUrl = process.env.NEXT_API_BASE_URL;
   try {
-    const response = await axios.get<Pokemon>(`${baseUrl}pokemon/${pokemonName}`);
-    
+    const baseUrl = process.env.NEXT_API_BASE_URL;
+    const response = await axios.get<Pokemon>(
+      `${baseUrl}pokemon/${pokemonName}`
+    );
+
     return {
       props: { pokemon: response.data },
-    }
+    };
   } catch {
     return {
       props: { pokemon: null },
-    }
+    };
   }
 }
 

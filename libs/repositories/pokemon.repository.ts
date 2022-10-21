@@ -23,10 +23,10 @@ export const findAll = async (limit: number = 151): Promise<Pokemon[]> => {
   }
 };
 
-export const findByName = async (name: string): Promise<Pokemon> => {
+export const findByNameOrId = async (nameOrId: string): Promise<Pokemon> => {
   try {
     const response = await axios.get<PokemonDto>(
-      `${baseUrl}pokemon/${name.toLowerCase()}`
+      `${baseUrl}pokemon/${nameOrId.toLowerCase()}`
     );
 
     if (!response || !response.data) {
