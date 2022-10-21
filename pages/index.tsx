@@ -69,7 +69,7 @@ const Home: NextPage = ({ pokemon }: any) => {
 export async function getServerSideProps() {
   try {
     const baseUrl = process.env.NEXT_API_BASE_URL;
-    const response = await axios.get(`${baseUrl}pokemon`);
+    const response = await axios.get(`${baseUrl}pokemon/`);
 
     return {
       props: { pokemon: response.data },

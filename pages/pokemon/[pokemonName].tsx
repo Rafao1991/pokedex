@@ -54,7 +54,7 @@ export async function getServerSideProps(ctx: any) {
   try {
     const baseUrl = process.env.NEXT_API_BASE_URL;
     const response = await axios.get<Pokemon>(
-      `${baseUrl}pokemon/${pokemonName}`
+      `${baseUrl}pokemon/${pokemonName}/`
     );
 
     return {
