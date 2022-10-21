@@ -8,11 +8,15 @@ import { useState } from "react";
 import NotFound from "../components/NotFound";
 import styles from "../styles/Home.module.css";
 
-const Home: NextPage = ({ pokemon }: any) => {
+interface HomeProps {
+  pokemon: Pokemon[];
+}
+
+const Home: NextPage<HomeProps> = ({ pokemon }) => {
   const router = useRouter();
-  const [filter, setFilter] = useState<string>("");
+  const [filter, setFilter] = useState("");
   const filteredPokemon = pokemon
-    ? pokemon.filter((pokemon: Pokemon) =>
+    ? pokemon.filter((pokemon) =>
         pokemon.name.toLocaleLowerCase().includes(filter.toLocaleLowerCase())
       )
     : [];
@@ -66,7 +70,7 @@ const Home: NextPage = ({ pokemon }: any) => {
   );
 };
 
-export async function getServerSideProps() {
+export const getServerSideProps = async () => {
   try {
     const baseUrl = process.env.NEXT_API_BASE_URL;
     const response = await axios.get(`${baseUrl}pokemon/`);
@@ -79,6 +83,6 @@ export async function getServerSideProps() {
       props: { pokemon: null },
     };
   }
-}
+};
 
 export default Home;

@@ -196,7 +196,7 @@ const Pokedex: NextPage<PokedexProps> = ({ baseUrl, pokemon: data }) => {
   );
 };
 
-export async function getServerSideProps() {
+export const getServerSideProps = async () => {
   const baseUrl = process.env.NEXT_API_BASE_URL;
   try {
     const response = await axios.get<Pokemon>(`${baseUrl}pokemon/1/`);
@@ -210,6 +210,6 @@ export async function getServerSideProps() {
       props: { baseUrl },
     };
   }
-}
+};
 
 export default Pokedex;

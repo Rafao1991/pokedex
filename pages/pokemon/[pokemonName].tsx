@@ -1,12 +1,16 @@
 import axios from "axios";
-import type { NextPage } from "next";
+import type { GetServerSideProps, NextPage } from "next";
 import Head from "next/head";
 import Image from "next/image";
 import { useRouter } from "next/router";
 import NotFound from "../../components/NotFound";
 import styles from "../../styles/Home.module.css";
 
-const PokemonName: NextPage = ({ pokemon }: any) => {
+interface PokemonProps {
+  pokemon: Pokemon;
+}
+
+const PokemonName: NextPage<PokemonProps> = ({ pokemon }) => {
   const router = useRouter();
 
   return (
@@ -35,8 +39,8 @@ const PokemonName: NextPage = ({ pokemon }: any) => {
                 />
               </div>
               <div className={styles.card_item}>
-                <p>Height: {pokemon.height}</p>
-                <p>Weight: {pokemon.weight}</p>
+                <p>Height: {pokemon.height / 10}m</p>
+                <p>Weight: {pokemon.weight / 10}kg</p>
                 <p>Types: {pokemon.types.join(", ")}</p>
               </div>
             </div>
@@ -49,8 +53,8 @@ const PokemonName: NextPage = ({ pokemon }: any) => {
   );
 };
 
-export async function getServerSideProps(ctx: any) {
-  const pokemonName: string = ctx.params.pokemonName;
+export const getServerSideProps: GetServerSideProps = async (ctx) => {
+  const pokemonName = ctx.params?.pokemonName;
   try {
     const baseUrl = process.env.NEXT_API_BASE_URL;
     const response = await axios.get<Pokemon>(
@@ -65,6 +69,6 @@ export async function getServerSideProps(ctx: any) {
       props: { pokemon: null },
     };
   }
-}
+};
 
 export default PokemonName;
