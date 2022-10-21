@@ -6,7 +6,7 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<Pokemon>
 ) {
-  const result = await pokemonRepository.findByName(
+  const result = await pokemonRepository.findByNameOrId(
     req.query.pokemonName as string
   );
 

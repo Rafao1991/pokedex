@@ -5,7 +5,7 @@ const baseUrl = process.env.POKE_API_BASE_URL;
 
 export const findAll = async (limit: number = 151): Promise<Pokemon[]> => {
   try {
-    const result = await axios.get(`${baseUrl}pokemon?limit=${limit}`);
+    const result = await axios.get(`${baseUrl}pokemon?limit=${limit}/`);
 
     if (!result || !result.data || !result.data.results) {
       return [];
@@ -23,14 +23,14 @@ export const findAll = async (limit: number = 151): Promise<Pokemon[]> => {
   }
 };
 
-export const findByName = async (name: string): Promise<Pokemon> => {
+export const findByNameOrId = async (nameOrId: string): Promise<Pokemon> => {
   try {
     const response = await axios.get<PokemonDto>(
-      `${baseUrl}pokemon/${name.toLowerCase()}`
+      `${baseUrl}pokemon/${nameOrId.toLowerCase()}/`
     );
 
     if (!response || !response.data) {
-      return {} as Pokemon;
+      return getEmptyPokemon();
     }
 
     const pokemon: Pokemon = {
@@ -47,6 +47,20 @@ export const findByName = async (name: string): Promise<Pokemon> => {
 
     return pokemon;
   } catch {
-    return {} as Pokemon;
+    return getEmptyPokemon();
   }
+};
+
+const getEmptyPokemon = (): Pokemon => {
+  const pokemon: Pokemon = {
+    id: 0,
+    name: "",
+    url: "",
+    height: 0,
+    weight: 0,
+    image: "",
+    types: [],
+  };
+
+  return pokemon;
 };
