@@ -2,19 +2,17 @@ import axios from "axios";
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 
-interface props {
+interface PokedexProps {
   baseUrl: string;
-  _pokemon: Pokemon;
+  pokemon: Pokemon;
 }
 
-const Pokedex: NextPage<props> = ({ baseUrl, _pokemon }: props) => {
+const Pokedex: NextPage<PokedexProps> = ({ baseUrl, pokemon: data }) => {
   const router = useRouter();
-  const [pokemonId, setPokemonId] = useState<number>(_pokemon.id);
-  const [pokemon, setPokemon] = useState<Pokemon>(_pokemon);
-
-  console.log(`render ${pokemonId} ${pokemon.name}`);
+  const [pokemonId, setPokemonId] = useState(data.id);
+  const [pokemon, setPokemon] = useState(data);
 
   useEffect(() => {
     const findById = async (id: number) => {
@@ -140,7 +138,7 @@ const Pokedex: NextPage<props> = ({ baseUrl, _pokemon }: props) => {
         {/* Top screen */}
         <div className="top-screen-container">
           <div id="about-screen" className="right-panel-screen">
-            {`Height:${pokemon.height}cm Weight:${pokemon.weight}kg`}
+            {`Height:${pokemon.height / 10}m Weight:${pokemon.weight / 10}kg`}
           </div>
         </div>
         {/* Blue Buttons */}
@@ -202,10 +200,10 @@ export async function getServerSideProps() {
   const baseUrl = process.env.NEXT_API_BASE_URL;
   try {
     const response = await axios.get<Pokemon>(`${baseUrl}pokemon/1/`);
-    const _pokemon = response.data;
+    const pokemon = response.data;
 
     return {
-      props: { baseUrl, _pokemon },
+      props: { baseUrl, pokemon },
     };
   } catch {
     return {
