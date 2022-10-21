@@ -30,7 +30,7 @@ export const findByNameOrId = async (nameOrId: string): Promise<Pokemon> => {
     );
 
     if (!response || !response.data) {
-      return {} as Pokemon;
+      return getEmptyPokemon();
     }
 
     const pokemon: Pokemon = {
@@ -47,6 +47,20 @@ export const findByNameOrId = async (nameOrId: string): Promise<Pokemon> => {
 
     return pokemon;
   } catch {
-    return {} as Pokemon;
+    return getEmptyPokemon();
   }
+};
+
+const getEmptyPokemon = (): Pokemon => {
+  const pokemon: Pokemon = {
+    id: 0,
+    name: "",
+    url: "",
+    height: 0,
+    weight: 0,
+    image: "",
+    types: [],
+  };
+
+  return pokemon;
 };

@@ -43,7 +43,7 @@ body {
   width: 100vw;
   display: flex;
   flex-direction: column;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
   margin-top: 2rem;
 }
@@ -178,7 +178,7 @@ input {
 .lights-container {
   position: relative;
   display: flex;
-  justify-content: start;
+  justify-content: flex-start;
   align-items: center;
 }
 
@@ -372,7 +372,7 @@ input {
 .upper-buttons-container {
   display: flex;
   align-items: top;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .long-buttons-container {
@@ -497,16 +497,6 @@ input {
   border-bottom: solid black 3px;
   border-bottom-right-radius: 10px;
 }
-#right-panel::before {
-  content: "";
-  position: absolute;
-  left: -3px;
-  bottom: 0;
-  width: 100%;
-  height: 265px;
-  border-right: solid black 3px;
-  border-bottom-right-radius: 7px;
-}
 /* top screen */
 .top-screen-container {
   display: flex;
@@ -550,6 +540,11 @@ input {
   border: black 1.5px solid;
   background-color: var(--square-buttons-color);
   box-shadow: inset -2px -2px #3298cb;
+  cursor: pointer;
+}
+.blue-square:hover {
+  background-color: var(--square-buttons-color);
+  box-shadow: inset -2px -2px #3241cb;
 }
 
 /* center buttons */
@@ -565,7 +560,7 @@ input {
 .small-reds-container {
   display: flex;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
 }
 .small-reds-container .small-light {
   border: solid black 2px;

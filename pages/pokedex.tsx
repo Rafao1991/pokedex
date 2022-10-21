@@ -2,29 +2,26 @@ import axios from "axios";
 import type { NextPage } from "next";
 import Image from "next/image";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface props {
   baseUrl: string;
+  _pokemon: Pokemon;
 }
 
-const Pokedex: NextPage<props> = ({ baseUrl }: props) => {
+const Pokedex: NextPage<props> = ({ baseUrl, _pokemon }: props) => {
   const router = useRouter();
-  const [pokemonId, setPokemonId] = useState(1);
-  const [pokemon, setPokemon] = useState<Pokemon>({} as Pokemon);
+  const [pokemonId, setPokemonId] = useState<number>(_pokemon.id);
+  const [pokemon, setPokemon] = useState<Pokemon>(_pokemon);
 
-  console.log("render");
+  console.log(`render ${pokemonId} ${pokemon.name}`);
 
   useEffect(() => {
     const findById = async (id: number) => {
       try {
         const response = await axios.get<Pokemon>(`${baseUrl}pokemon/${id}`);
         setPokemon(response.data);
-      } catch {
-        return {
-          props: { pokemon: null },
-        };
-      }
+      } catch {}
     };
     findById(pokemonId);
   }, [baseUrl, pokemonId]);
@@ -143,7 +140,7 @@ const Pokedex: NextPage<props> = ({ baseUrl }: props) => {
         {/* Top screen */}
         <div className="top-screen-container">
           <div id="about-screen" className="right-panel-screen">
-            Height: {pokemon.height}cm Weight: {pokemon.weight}kg
+            {`Height:${pokemon.height}cm Weight:${pokemon.weight}kg`}
           </div>
         </div>
         {/* Blue Buttons */}
@@ -203,9 +200,18 @@ const Pokedex: NextPage<props> = ({ baseUrl }: props) => {
 
 export async function getServerSideProps() {
   const baseUrl = process.env.NEXT_API_BASE_URL;
-  return {
-    props: { baseUrl },
-  };
+  try {
+    const response = await axios.get<Pokemon>(`${baseUrl}pokemon/1`);
+    const _pokemon = response.data;
+
+    return {
+      props: { baseUrl, _pokemon },
+    };
+  } catch {
+    return {
+      props: { baseUrl },
+    };
+  }
 }
 
 export default Pokedex;
